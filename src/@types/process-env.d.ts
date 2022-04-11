@@ -3,6 +3,8 @@ declare let process : {
 		DATABASE_HOST : string,
 		DATABASE_USER : string,
 		DATABASE_PASSWORD : string,
-		DATABASE_NAME : string
+		DATABASE_NAME : string,
+
+		TELEGRAM_BOT_TOKEN : string
 	}
 }
