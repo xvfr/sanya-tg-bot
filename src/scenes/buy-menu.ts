@@ -80,6 +80,7 @@ const selectGoodStep = async ( ctx : ContextE ) => {
 	const goods = await db( 'goods' )
 		.select( 'name' )
 		.where( 'city_id', ctx.session.cityId )
+		.andWhere( 'price', '>', 0 )
 
 	if ( !goods.length )
 		return ctx.reply( 'В данный момент нет добавленных товаров, попробуйте позже!' )
@@ -108,5 +109,6 @@ const buyMenu = new Scenes.WizardScene(
 	selectCityHandler,
 	selectGoodHandler
 )
+
 
 export default buyMenu
