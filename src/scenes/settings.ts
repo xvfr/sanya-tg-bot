@@ -12,6 +12,8 @@ selectTypeHandler.hears( 'Удалить город', ctx => ctx.scene.enter( 'c
 
 // goods
 selectTypeHandler.hears( 'Добавить товар', ctx => ctx.scene.enter( 'goods/create' ) )
+selectTypeHandler.hears( 'Редактировать товар', ctx => ctx.scene.enter( 'goods/edit' ) )
+selectTypeHandler.hears( 'Удалить товар', ctx => ctx.scene.enter( 'goods/delete' ) )
 
 const settings = new Scenes.WizardScene(
 	'settings',
@@ -21,9 +23,9 @@ const settings = new Scenes.WizardScene(
 		await ctx.wizard.next()
 
 		return ctx.reply( 'Выберите настройку', Markup.keyboard( [
-			[ 'Добавить город', 'Добавить товар', 'Добавить картинку' ],
-			[ 'Редактировать город', 'Редактировать товар', 'Редактировать картинку' ],
-			[ 'Удалить город', 'Удалить товар', 'Удалить картинку' ],
+			[ 'Добавить город', 'Редактировать город', 'Удалить город' ],
+			[ 'Добавить товар', 'Редактировать товар', 'Удалить товар' ],
+			[ 'Добавить картинку' ],
 			[ 'Назад' ]
 		] ) )
 

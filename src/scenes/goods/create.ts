@@ -42,6 +42,7 @@ selectNameHandler.hears( /.+/, async ctx => {
 
 	const exist = await db( 'goods' )
 		.first( 'city_id' )
+		.where( 'city_id', ctx.session.cityId )
 		.where( 'name', goodName )
 
 	if ( exist )

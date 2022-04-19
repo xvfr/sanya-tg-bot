@@ -27,7 +27,7 @@ selectCityHandler.hears( /.+/, async ( ctx ) => {
 
 } )
 
-// select new name
+// confirmation
 
 const confirmHandler = new Composer<ContextE>()
 

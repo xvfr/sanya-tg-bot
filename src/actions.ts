@@ -14,7 +14,10 @@ actions.action( /generatelink:(\d+):(\d+)/, async ctx => {
 		.first( 'goods.name', 'price', 'cities.name as city' )
 		.where( 'cities.city_id', cityId )
 		.where( 'good_id', goodId )
-		.leftJoin( 'cities', 'cities.city_id', 'goods.city_id' )
+		.leftJoin( 'cities', 'cities.city_id', 'goods.city_id' ) || {}
+
+	if ( !name )
+		return ctx.editMessageText('Товара больше не существует')
 
 	return ctx.editMessageText( `
 Выбранный товар: ${ name }
