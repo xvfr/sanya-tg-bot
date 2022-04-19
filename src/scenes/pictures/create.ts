@@ -36,7 +36,7 @@ selectCityHandler.hears( /.+/, async ( ctx ) => {
 	keyboard.push( 'Отменить' )
 
 	await ctx.wizard.next()
-	return ctx.reply( 'Выберите товар для удаления', Markup.keyboard( keyboard, { columns : 3 } ).resize() )
+	return ctx.reply( 'Выберите товар для прикрепления картинки', Markup.keyboard( keyboard, { columns : 3 } ).resize() )
 
 } )
 
@@ -62,30 +62,38 @@ selectGoodHandler.hears( /.+/, async ( ctx ) => {
 	ctx.session.goodId = goodId
 
 	await ctx.wizard.next()
-	return ctx.reply( 'Вы действительно хотите удалить выбранный товар', Markup.keyboard( [ [ 'Подтвердить' ], [ 'Отменить' ] ] ).resize() )
+	return ctx.reply( 'Отправьте картинку для прикрепления к товару', Markup.keyboard( [ [ 'Назад' ], [ 'Отменить' ] ] ).resize() )
 
 } )
 
-// confirmation
+// select picture
 
-const confirmHandler = new Composer<ContextE>()
+const selectPictureHandler = new Composer<ContextE>()
 
-confirmHandler.hears( 'Отменить', ctx => ctx.scene.reenter() )
+selectPictureHandler.hears( 'Назад', ctx => ctx.scene.reenter() )
+selectPictureHandler.hears( 'Отменить', ctx => ctx.scene.enter( 'settings' ) )
 
-confirmHandler.hears( 'Подтвердить', async ctx => {
+selectPictureHandler.on( 'photo', async ( ctx ) => {
+
+	if ( !ctx.update.message.photo )
+		return ctx.reply( 'Сообщение должно содержать картинку' )
+
+	const fileId = ctx.update.message.photo[ 0 ].file_id
 
 	try {
 
-		await db( 'goods' )
-			.delete()
-			.where( 'good_id', ctx.session.goodId )
+		await db( 'pictures' )
+			.insert( {
+				good_id : ctx.session.goodId,
+				tg_file_id : fileId
+			} )
 
-		await ctx.reply( `Товар был успешно удален` )
+		await ctx.reply( 'Картинка была успешно привязана к товару' )
 
 	} catch ( e ) {
 
-		console.log( 'delete good error', e )
-		await ctx.reply( `Не удалось удалить товар, попробуйте позже` )
+		console.log( e, 'error create picture' )
+		await ctx.reply( 'Не удалось привязать картинку к товару, попробуйте позже' )
 
 	}
 
@@ -95,8 +103,8 @@ confirmHandler.hears( 'Подтвердить', async ctx => {
 
 // scene
 
-const goodsDelete = new Scenes.WizardScene(
-	'goods/delete',
+const picturesCreate = new Scenes.WizardScene(
+	'pictures/create',
 
 	async ( ctx ) => {
 
@@ -104,7 +112,7 @@ const goodsDelete = new Scenes.WizardScene(
 			.select( 'name' )
 
 		if ( !cities )
-			return ctx.reply( 'Нет товаров доступных для удаления' ), ctx.scene.enter( 'settings' )
+			return ctx.reply( 'Нет доступных товаров' ), ctx.scene.enter( 'settings' )
 
 		const keyboard = cities.map( c => c.name )
 
@@ -117,7 +125,7 @@ const goodsDelete = new Scenes.WizardScene(
 
 	selectCityHandler,
 	selectGoodHandler,
-	confirmHandler
+	selectPictureHandler
 )
 
-export default goodsDelete
+export default picturesCreate

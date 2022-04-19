@@ -10,6 +10,7 @@ import citiesDelete from './cities/delete'
 import goodsCreate from './goods/create'
 import goodsEdit from './goods/edit'
 import goodsDelete from './goods/delete'
+import picturesCreate from './pictures/create'
 
 const scenes = [
 	buyMenu,
@@ -22,7 +23,9 @@ const scenes = [
 
 	goodsCreate,
 	goodsEdit,
-	goodsDelete
+	goodsDelete,
+
+	picturesCreate
 ]
 
 scenes.forEach( s => s.id === 'settings' || s.settings( ctx => ctx.scene.enter( 'settings' ) ) )

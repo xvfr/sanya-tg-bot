@@ -19,8 +19,20 @@ composer.use( actions )
 composer.use( session() )
 composer.use( stage.middleware() )
 
-composer.start( ctx => ctx.scene.enter('buy-menu') )
-composer.settings( ctx => ctx.scene.enter('settings') )
+composer.start( ctx => ctx.scene.enter( 'buy-menu' ) )
+composer.settings( ctx => ctx.scene.enter( 'settings' ) )
+
+// composer.on( 'message', async ctx => {
+// 	// @ts-ignore
+// 	console.log( ctx.message.photo )
+//
+// 	// ctx.replyWithPhoto( {
+// 	// 	url : 'https://images.hdqwalls.com/download/artist-workspace-ei-2560x1080.jpg'
+// 	// } )
+//
+// 	ctx.replyWithPhoto( 'AgACAgIAAxkBAAIJo2JfMv1eiVwS3TWWh-YqoGYooxzMAAInvDEb2nL5ShbFhrlyLkGlAQADAgADeAADJAQ' )
+//
+// } )
 
 composer.on( 'message', async ctx => {
 	return ctx.reply( 'Неизвестная команда!\nИспользуйте /start чтобы вернуться в меню' )

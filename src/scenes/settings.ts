@@ -15,6 +15,9 @@ selectTypeHandler.hears( 'Добавить товар', ctx => ctx.scene.enter( 
 selectTypeHandler.hears( 'Редактировать товар', ctx => ctx.scene.enter( 'goods/edit' ) )
 selectTypeHandler.hears( 'Удалить товар', ctx => ctx.scene.enter( 'goods/delete' ) )
 
+// pictures
+selectTypeHandler.hears( 'Добавить картинку', ctx => ctx.scene.enter( 'pictures/create' ) )
+
 const settings = new Scenes.WizardScene(
 	'settings',
 

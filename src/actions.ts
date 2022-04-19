@@ -17,7 +17,17 @@ actions.action( /generatelink:(\d+):(\d+)/, async ctx => {
 		.leftJoin( 'cities', 'cities.city_id', 'goods.city_id' ) || {}
 
 	if ( !name )
-		return ctx.editMessageText('Товара больше не существует')
+		return ctx.editMessageText( 'Товара больше не существует' )
+
+	const { tg_file_id : fileID } = await db( 'pictures' )
+		.first( 'tg_file_id' )
+		.where( 'good_id', goodId ) || {}
+
+	await ctx.replyWithPhoto( fileID, {
+		protect_content : true,
+		reply_to_message_id : ctx.update.callback_query.message?.message_id,
+		caption : 'success'
+	} )
 
 	return ctx.editMessageText( `
 Выбранный товар: ${ name }
