@@ -5,6 +5,8 @@ declare let process : {
 		DATABASE_PASSWORD : string,
 		DATABASE_NAME : string,
 
-		TELEGRAM_BOT_TOKEN : string
+		TELEGRAM_BOT_TOKEN : string,
+
+		WALLET : string
 	}
 }

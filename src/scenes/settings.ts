@@ -23,6 +23,8 @@ const settings = new Scenes.WizardScene(
 
 	async ( ctx ) => {
 
+		// TODO :: check admin access
+
 		await ctx.wizard.next()
 
 		return ctx.reply( 'Выберите настройку', Markup.keyboard( [
