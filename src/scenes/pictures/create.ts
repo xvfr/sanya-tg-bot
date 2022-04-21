@@ -75,6 +75,9 @@ selectPictureHandler.hears( 'Отменить', ctx => ctx.scene.enter( 'setting
 
 selectPictureHandler.on( 'photo', async ( ctx ) => {
 
+	if ( !ctx.update.message.caption )
+		return ctx.reply( 'Картинка должна иметь подпись' )
+
 	if ( !ctx.update.message.photo )
 		return ctx.reply( 'Сообщение должно содержать картинку' )
 
@@ -85,7 +88,8 @@ selectPictureHandler.on( 'photo', async ( ctx ) => {
 		await db( 'pictures' )
 			.insert( {
 				good_id : ctx.session.goodId,
-				tg_file_id : fileId
+				tg_file_id : fileId,
+				caption : ctx.update.message.caption
 			} )
 
 		await ctx.reply( 'Картинка была успешно привязана к товару' )

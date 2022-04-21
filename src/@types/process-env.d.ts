@@ -7,6 +7,8 @@ declare let process : {
 
 		TELEGRAM_BOT_TOKEN : string,
 
-		WALLET : string
+		WALLET : string,
+
+		ADMINS : string
 	}
 }

@@ -31,4 +31,6 @@ const scenes = [
 scenes.forEach( s => s.id === 'settings' || s.settings( ctx => ctx.scene.enter( 'settings' ) ) )
 scenes.forEach( s => s.id === 'buy-menu' || s.start( ctx => ctx.scene.enter( 'buy-menu' ) ) )
 
-export default new Scenes.Stage<any>( scenes )
+export default new Scenes.Stage<any>( scenes, {
+	default : 'buy-menu'
+} )

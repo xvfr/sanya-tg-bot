@@ -15,7 +15,7 @@ cron.schedule( '00 12 */4 * *', async () => {
 
 } )
 
-cron.schedule( '*/20 * * * *', async () => {
+cron.schedule( '* * * * *', async () => {
 
 	/*
 	 * Statuses
@@ -46,13 +46,13 @@ cron.schedule( '*/20 * * * *', async () => {
 				console.log( 'can\'t set new status for payment', e )
 			}
 
-			const { tg_file_id : picture, picture_id : pictureId } = await db( 'pictures' )
-				.first( 'tg_file_id', 'picture_id' )
+			const { tg_file_id : picture, picture_id : pictureId, caption } = await db( 'pictures' )
+				.first( 'tg_file_id', 'picture_id', 'caption' )
 				.where( 'good_id', payment.good_id ) || {}
 
 			if ( !pictureId ) {
 
-				await bot.telegram.sendMessage( payment.tg_user_id, 'Обратитесь в поддержку' )
+				await bot.telegram.sendMessage( payment.tg_user_id, 'У данного товара нет изображения, пожалуйста обратитесь в службу поддержки - "ссылка"' )
 
 			} else {
 
@@ -62,7 +62,9 @@ cron.schedule( '*/20 * * * *', async () => {
 					} )
 					.where( 'picture_id', pictureId )
 
-				await bot.telegram.sendPhoto( payment.tg_user_id, picture )
+				await bot.telegram.sendPhoto( payment.tg_user_id, picture, {
+					caption
+				} )
 
 			}
 

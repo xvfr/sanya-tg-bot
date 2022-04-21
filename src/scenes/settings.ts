@@ -23,7 +23,13 @@ const settings = new Scenes.WizardScene(
 
 	async ( ctx ) => {
 
-		// TODO :: check admin access
+		const
+			admins = process.env.ADMINS?.split( ',' ).map( a => Number( a ) )
+
+		if ( !admins || !( 'message' in ctx.update ) || !admins.includes( ctx.update.message.from.id ) ) {
+			await ctx.reply( 'Неизвестная команда!\nИспользуйте /start чтобы вернуться в меню' )
+			return ctx.scene.reset()
+		}
 
 		await ctx.wizard.next()
 
